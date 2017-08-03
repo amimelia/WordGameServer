@@ -12,6 +12,7 @@ namespace WordGameServer.Controllers
     public class UserController : ApiController
     {
         [HttpGet]
+        [HttpPost]
         [ActionName("GetUser")]
         public IHttpActionResult GetUser(string userUid)
         {
@@ -26,6 +27,17 @@ namespace WordGameServer.Controllers
             }
 
         }
+
+        [HttpGet]
+        [HttpPost]
+        [ActionName("RemoveUser")]
+        public IHttpActionResult RemoveUser(string userName)
+        {
+            UsersManager.Instance.RemoveUserByName(userName);
+            return Ok();
+        }
+
+        [HttpPost]
         [HttpGet]
         [ActionName("AddUserName")]
         public IHttpActionResult AddUserName(string useruid, string username)

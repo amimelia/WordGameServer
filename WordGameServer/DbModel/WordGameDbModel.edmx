@@ -13,6 +13,7 @@
           <Property Name="UniqueId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="100" />
           <Property Name="LastLoginDate" Type="datetime" />
+          <Property Name="IconId" Type="int" />
         </EntityType>
         <EntityContainer Name="WordGameDbModelStoreContainer">
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
@@ -29,6 +30,7 @@
           <Property Name="UniqueId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="LastLoginDate" Type="DateTime" Precision="3" />
+          <Property Name="IconId" Type="Int32" />
         </EntityType>
         <EntityContainer Name="DB_A28BF5_WordGameDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="users" EntityType="Self.user" />
@@ -42,6 +44,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="WordGameDbModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="IconId" ColumnName="IconId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UniqueId" ColumnName="UniqueId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

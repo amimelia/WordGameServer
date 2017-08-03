@@ -18,5 +18,6 @@ namespace WordGameServer.DbModel
         public string UniqueId { get; set; }
         public string UserName { get; set; }
         public Nullable<System.DateTime> LastLoginDate { get; set; }
+        public Nullable<int> IconId { get; set; }
     }
 }

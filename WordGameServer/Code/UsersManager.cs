@@ -37,6 +37,34 @@ namespace WordGameServer.Code
             }
         }
 
+        public user GetUserByName(string userName)
+        {
+            using (var dbContext = new DB_A28BF5_WordGameDbEntities())
+            {
+                var curUserList = dbContext.users.Where(user => user.UserName == userName);
+                if (curUserList.Any())
+                {
+                    return curUserList.FirstOrDefault();
+                }
+                else
+                {
+                    return user.USER_NOT_FOUND;
+                }
+            }
+        }
+
+        public void RemoveUserByName(string userName)
+        {
+            using (var dbContext = new DB_A28BF5_WordGameDbEntities())
+            {
+                var userToRemove = dbContext.users.Where(x => userName == x.UserName).FirstOrDefault();
+                if (userToRemove == null)
+                    return;
+                dbContext.users.Remove(userToRemove);
+                dbContext.SaveChanges();
+            }
+        }
+
         internal int AddUserName(string userUid, string userName)
         {
             using (var dbContext = new DB_A28BF5_WordGameDbEntities())
@@ -47,6 +75,7 @@ namespace WordGameServer.Code
                 }
                 dbContext.users.Add(new user
                 {
+                    IconId = new Random().Next(1, 10),
                     UserName = userName,
                     UniqueId = userUid,
                     LastLoginDate = DateTime.Now
