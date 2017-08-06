@@ -59,13 +59,25 @@ namespace WordGameServer.Code.Lobby
             roomsToRemove.ForEach(toRemove => _rooms.Remove(toRemove));
         }
 
+        internal void RemoveRoomFromList(Room room)
+        {
+            _rooms.Remove(room);
+        }
+
         public void JoinRoom(string userName, int roomId)
         {
             var roomToJoin = GetRoomById(roomId);
-            if (roomToJoin == null)
+
+            if (roomToJoin == null || roomToJoin.IsClosed())
             {
                 throw new Exception("room.no.exists.anymore");
             }
+
+            if (roomToJoin.MembersCount == 5)
+            {
+                throw new Exception("room.full");
+            }
+
             if (!roomToJoin.Members.Contains(userName))
                 roomToJoin.Members.Add(userName);
             if (roomToJoin.InvitedUsers.Contains(userName))
@@ -79,10 +91,20 @@ namespace WordGameServer.Code.Lobby
         {
             var room = GetRoomById(roomId);
             if (room == null)
-                return;
-            if (!room.InvitedUsers.Contains(userName))
-                room.InvitedUsers.Add(userName);
-            CommunicationManager.Instance.NotifyUserInvited(userName, userTo, roomId);
+                throw new Exception("room.doesnot.exists");
+            if (UsersManager.Instance.GetUserByName(userTo) == user.USER_NOT_FOUND)
+                throw new Exception("user.doesnot.exists");
+            if (!room.InvitedUsers.Contains(userTo))
+                room.InvitedUsers.Add(userTo);
+            try
+            {
+                CommunicationManager.Instance.NotifyUserInvited(userName, userTo, roomId);
+            }
+            catch
+            {
+                throw new Exception("user.not.logged");
+            }
+            
         }
 
         internal Room GetRoomInfo(int roomId)
@@ -106,7 +128,7 @@ namespace WordGameServer.Code.Lobby
 
         public List<Room> GetAvaliableRooms(string userName)
         {
-            return _rooms.Where(room => room.IsPublicRoom() || room.InvitedUsers.Contains(userName)).ToList();
+            return _rooms.Where(room => !room.IsClosed() && (room.IsPublicRoom() || room.InvitedUsers.Contains(userName))).ToList();
         }
 
     }

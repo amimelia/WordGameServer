@@ -179,9 +179,14 @@
     <Compile Include="Code\Communication\Events\EventResponse.cs" />
     <Compile Include="Code\Communication\SignalRService.cs" />
     <Compile Include="Code\DbModel\user.cs" />
+    <Compile Include="Code\Game\CardGenerator.cs" />
+    <Compile Include="Code\Game\GameConstants.cs" />
+    <Compile Include="Code\Game\WordGame.cs" />
+    <Compile Include="Code\Game\GameManager.cs" />
     <Compile Include="Code\Lobby\LobbyManager.cs" />
     <Compile Include="Code\Lobby\Models\Room.cs" />
     <Compile Include="Code\UsersManager.cs" />
+    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameLobbyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DbModel\user.cs">
@@ -206,6 +211,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\GameModel.cs" />
+    <Compile Include="Models\GameStates.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -246,7 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,8 +19,11 @@ namespace WordGameServer.Code
                 return _instance;
             }
         }
-        
+
         #endregion
+
+
+        public ConcurrentDictionary<string, DateTime> LiveUsers = new ConcurrentDictionary<string, DateTime>();
 
         public user GetUserByUId(string userId)
         {
@@ -83,6 +87,12 @@ namespace WordGameServer.Code
                 dbContext.SaveChanges();
                 return 0;
             }
+        }
+
+        internal void UserIsLive(string eventAuthor)
+        {
+            var timeNow = DateTime.Now;
+            LiveUsers.AddOrUpdate(eventAuthor, timeNow, (key, oldValue) => timeNow);
         }
     }
 }

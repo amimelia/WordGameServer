@@ -50,7 +50,17 @@ namespace WordGameServer.Code.Lobby.Models
             return !IsPublicRoom();
         }
 
+        public void CloseRoom()
+        {
+            _closed = true;
+        }
 
+        public bool IsClosed()
+        {
+            return _closed;
+        }
+
+        private bool _closed = false;
         public static string PUBLIC_ROOM = "public";
         public static string PRIVATE_ROOM = "private";
 

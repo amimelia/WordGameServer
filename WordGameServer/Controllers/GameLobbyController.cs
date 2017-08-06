@@ -67,11 +67,11 @@ namespace WordGameServer.Controllers
             try
             {
                 LobbyManager.Instance.InvitePlayer(userName, userTo, roomId);
-                return Ok();
+                return Ok("OK");
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
+                return Ok(ex.Message);
             }
 
         }

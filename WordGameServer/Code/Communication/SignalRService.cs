@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using WordGameServer.Code.Communication.Events;
 
 namespace WordGameServer.Code.Communication
 {
     public class SignalRService : Hub
     {
-        private static ConcurrentDictionary<string, string> GameUsers = new ConcurrentDictionary<string, string>();// <userName, connectionId>
+        public static ConcurrentDictionary<string, string> GameUsers = new ConcurrentDictionary<string, string>();// <userName, connectionId>
         private string userName = "";
 
         public override Task OnConnected()
@@ -23,10 +24,11 @@ namespace WordGameServer.Code.Communication
 
         public override Task OnDisconnected(bool stopCalled)
         {
+            GameUsers.TryRemove(Context.ConnectionId, out userName);
             if (stopCalled) // Client explicitly closed the connection
             {
                 string id = Context.ConnectionId;
-                GameUsers.TryRemove(id, out userName);
+                
                 //TODO user disconnected
             }
             else // Client timed out
@@ -59,14 +61,20 @@ namespace WordGameServer.Code.Communication
         [HubMethodName("PostEvent")]
         public void EventReceived(EventResponse response)
         {
+            GameEvent gameEvent = new GameEvent();
+            gameEvent.EventAuthor = response.eventAuthor;
+            gameEvent.EventKey = response.eventKey;
+            gameEvent.EventData = Json.Decode(response.eventJsonData);
 
+            CommunicationManager.Instance.GameEventReceived(gameEvent);
         }
 
         public static string GetConnectionIdForUser(string username)
         {
-            string connId = "";
-            GameUsers.TryGetValue(username, out connId);
-            return connId;
+
+            var user = GameUsers.FirstOrDefault(pair => pair.Value == username);
+            //throw new SystemException("UserName " + username + "connection = " + user.Key);
+            return user.Key;
         }
 
         [HubMethodName("test")]

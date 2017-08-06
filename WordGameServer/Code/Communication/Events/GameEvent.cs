@@ -10,5 +10,11 @@ namespace WordGameServer.Code.Communication.Events
         public string EventKey { get; set; }
         public string EventAuthor { get; set; }
         public dynamic EventData { get; set; }
+
+
+        public bool IsSameEvent(string eventKey)
+        {
+            return eventKey.Equals(EventKey);
+        }
     }
 }
